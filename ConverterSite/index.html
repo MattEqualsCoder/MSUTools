@@ -1,0 +1,65 @@
+<html>
+    <head>
+        <style type="text/css">
+            textarea {
+                width: 100%;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                        box-sizing: border-box;
+            }
+        </style>
+    </head>
+    <h1>MSU Json Converter</h1>
+    <table width="100%">
+        <tr>
+            <td width="50%">
+                <h2>Input</h2>
+                <textarea id="input_box" rows="30"></textarea>
+            </td>
+            <td width="50%">
+                <h2>Output</h2>
+                <textarea id="output_box" rows="30" readonly></textarea>
+            </td>
+        </tr>
+    </table>
+    <hr />
+    <h3>Swap Track Order</h3>
+    <button onclick="swap()">Swap Tracks</button>
+    <br />
+    <br />
+    <hr />
+    <h3>Convert JSON to Track List Yaml</h3>
+    <label>
+        <input type="checkbox" id="zelda_first" checked="checked"/> Zelda tracks first
+    </label>
+    <br />
+    <label>
+        <input type="checkbox" id="metroid_first" /> Metroid tracks first
+    </label>
+    <br />
+    <label>
+        <input type="checkbox" id="track_title" /> Use track title as song name
+    </label>
+    <br />
+    <label>
+        <input type="checkbox" id="file_title" /> Use file name as song name
+    </label>
+    <br />
+    <label>
+        <input type="checkbox" id="do_not_copy_artist" /> Do not copy artist
+    </label>
+    <br />
+    <label>
+        <input type="checkbox" id="include_comment" /> Include track number comment
+    </label>
+    <br />
+    <input type="text" placeholder="Default Album" id="album" />
+    <br />
+    <br />
+    <button onclick="to_yaml()">Create Track Yaml</button>
+    <div style="border: 1px solid black; color: red; white-space: pre; display:none; padding: 5px; margin: 5px;" id="errors"></div>
+
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="data-20230622a.js"></script>
+    <script type="text/javascript" src="functions-20230622.js"></script>
+</html>
