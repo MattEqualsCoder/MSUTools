@@ -41,8 +41,11 @@ List<string> warnings = new List<string>();
 List<string> missingTracks = new List<string>();
 
 Console.WriteLine($"Parsing {Path.GetFullPath(path)} successful");
-
-Console.WriteLine($"Results for MSU {config.PackName} (v{config.PackVersion}) by {config.PackAuthor}:");
+Console.WriteLine();
+Console.WriteLine("----------------------------------------------------------------------------------------------------");
+Console.WriteLine();
+Console.WriteLine($"Tracks for MSU {config.PackName} (v{config.PackVersion}) by {config.PackAuthor}:");
+Console.WriteLine();
 
 var directory = Directory.GetParent(path)?.FullName ?? "";
 var baseFileName = Path.GetFullPath(path).Replace(".yaml", "").Replace(".yml", "");
@@ -101,10 +104,10 @@ foreach (var prop in typeof(MSUTrackList).GetProperties())
             var pcmFound = File.Exists(basePcmPath);
             var output =
                 $"{track.GetDisplayText(config.Artist, config.Album)} {(pcmFound ? "found" : "not found")} at file: {file}";
-            Console.WriteLine($"  - {output}");
+            Console.WriteLine($" - {output}");
             if (!pcmFound)
             {
-                warnings.Add(output);
+                warnings.Add($"{prop.Name}: {output}");
             }
         }
         else
@@ -115,16 +118,16 @@ foreach (var prop in typeof(MSUTrackList).GetProperties())
                 if (!currentTrack.HasData)
                 {
                     var output = $"A track for {prop.Name} missing data";
-                    Console.WriteLine($"  - {output}");
-                    warnings.Add(output);
+                    Console.WriteLine($" - {output}");
+                    warnings.Add($"{prop.Name}: {output}");
                     continue;
                 }
                 
                 if (!currentTrack.HasAltTrackData)
                 {
                     var output = $"{currentTrack.GetDisplayText(config.Artist, config.Album)} missing either path, hash, or file_length if alts are desired";
-                    Console.WriteLine($"  - {output}");
-                    warnings.Add(output);
+                    Console.WriteLine($" - {output}");
+                    warnings.Add($"{prop.Name}: {output}");
                     continue;
                 }
 
@@ -134,15 +137,47 @@ foreach (var prop in typeof(MSUTrackList).GetProperties())
                 {
                     var file = Path.GetRelativePath(directory, altFile);
                     var output = $"{currentTrack.GetDisplayText(config.Artist, config.Album)} not found at file: {file}";
-                    Console.WriteLine($"  - {output}");
-                    warnings.Add(output);
+                    Console.WriteLine($" - {output}");
+                    warnings.Add($"{prop.Name}: {output}");
                 }
                 else
                 {
                     var file = Path.GetRelativePath(directory, selectedFile);
                     var output = $"{currentTrack.GetDisplayText(config.Artist, config.Album)} found at file: {file}";
-                    Console.WriteLine($"  - {output}");
+                    Console.WriteLine($" - {output}");
                 }
+            }
+        }
+    }
+    else
+    {
+        Console.WriteLine(prop.Name);
+        if (track.Alts == null || track.Alts.Count == 0)
+        {
+            Console.WriteLine($" - {track.GetDisplayText(config.Artist, config.Album)}");
+        }
+        else
+        {
+            var tracks = track.Alts.Append(track);
+            foreach (var currentTrack in tracks)
+            {
+                if (!currentTrack.HasData)
+                {
+                    var output = $"A track for {prop.Name} missing data";
+                    Console.WriteLine($" - {output}");
+                    warnings.Add($"{prop.Name}: {output}");
+                    continue;
+                }
+                
+                if (!currentTrack.HasAltTrackData)
+                {
+                    var output = $"{currentTrack.GetDisplayText(config.Artist, config.Album)} missing either path, hash, or file_length if alts are desired";
+                    Console.WriteLine($" - {output}");
+                    warnings.Add($"{prop.Name}: {output}");
+                    continue;
+                }
+
+                Console.WriteLine($" - {currentTrack.GetDisplayText(config.Artist, config.Album)}");
             }
         }
     }
@@ -152,26 +187,32 @@ foreach (var prop in typeof(MSUTrackList).GetProperties())
 
 if (missingTracks.Any())
 {
+    Console.WriteLine("----------------------------------------------------------------------------------------------------");
+    Console.WriteLine();
     Console.WriteLine("Missing Tracks:");
     foreach (var track in missingTracks)
     {
-        Console.WriteLine("  - " + track);
+        Console.WriteLine(" - " + track);
     }
     Console.WriteLine();
 }
 
 if (warnings.Any())
 {
+    Console.WriteLine("----------------------------------------------------------------------------------------------------");
+    Console.WriteLine();
     Console.WriteLine("Warnings:");
     foreach (var warning in warnings)
     {
-        Console.WriteLine("  - " + warning);
+        Console.WriteLine(" - " + warning);
     }
     Console.WriteLine();
 }
 
 
-Console.WriteLine("Complete!");
+Console.WriteLine("----------------------------------------------------------------------------------------------------");
+Console.WriteLine();
+Console.WriteLine($"Complete{(warnings.Any() ? " (with Warnings)" : "")}!");
 Console.Read();
 
     

@@ -1,11 +1,18 @@
 <html>
     <head>
         <style type="text/css">
+            body {
+                background-color: #000000;
+                color: #cccccc;
+            }
             textarea {
                 width: 100%;
                 -webkit-box-sizing: border-box;
                 -moz-box-sizing: border-box;
                         box-sizing: border-box;
+                border: 1px solid #777777;
+                background: #111111;
+                color: #cccccc;
             }
         </style>
     </head>
@@ -15,10 +22,17 @@
             <td width="50%">
                 <h2>Input</h2>
                 <textarea id="input_box" rows="30"></textarea>
+                <div style="text-align:center; margin-top: 3px; height: 30px;">
+                    &nbsp;
+                </div>
             </td>
             <td width="50%">
                 <h2>Output</h2>
                 <textarea id="output_box" rows="30" readonly></textarea>
+                <div style="text-align:center; margin-top: 3px; height: 30px;">
+                    <button onclick="copy_output()">Copy to Clipboard</button>
+                </div>
+                
             </td>
         </tr>
     </table>
@@ -60,6 +74,6 @@
     <div style="border: 1px solid black; color: red; white-space: pre; display:none; padding: 5px; margin: 5px;" id="errors"></div>
 
     <script type="text/javascript" src="jquery.js"></script>
-    <script type="text/javascript" src="data-20230622a.js"></script>
-    <script type="text/javascript" src="functions-20230622.js"></script>
+    <script type="text/javascript" src="data-20230623.js"></script>
+    <script type="text/javascript" src="functions-20230623a.js"></script>
 </html>

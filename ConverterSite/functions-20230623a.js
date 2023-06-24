@@ -78,7 +78,7 @@ function to_yaml(){
                 errors += "Track " + track.title + " does not have a file specified<br />";
                 song_name = "";
             } else {
-                song_name = song_name.substring(0, song_name.indexOf("."));
+                song_name = song_name.substring(0, song_name.lastIndexOf("."));
                 if (song_name.includes('\\')) {
                     song_name = song_name.substring(song_name.lastIndexOf('\\')+1);
                 }
@@ -102,6 +102,14 @@ function to_yaml(){
         $("#errors").hide();
     }
     $("#output_box").val(output);
+}
+
+function copy_output() {
+    var copyText = document.getElementById("output_box");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(copyText.value);
+    console.log("copied");
 }
 
 $("#zelda_first").change(function() {
